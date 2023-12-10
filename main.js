@@ -18,9 +18,9 @@ const load = () => {
         }
 
         const langRegex = /\?lang=(\w{4})/;
-        const language = location.search && langRegex.test(location.search) ? langRegex.exec(location.search)[1] : 'USen';
+        const language = location.search && langRegex.test(location.search) ? langRegex.exec(location.search)[1] : 'KRko';
         if (Object.keys(lang).indexOf(language) === -1) {
-            language = 'USen';
+            language = 'KRko';
         }
         document.body.setAttribute('lang', language);
 
@@ -102,19 +102,19 @@ const load = () => {
         const downloadbutton = document.querySelector('#downloadbutton');
 
         const canvasLayer = document.createElement('canvas');
-        canvasLayer.width = 700;
-        canvasLayer.height = 200;
+        canvasLayer.width = 740;
+        canvasLayer.height = 240;
         const layerCtx = canvasLayer.getContext('2d');
 
         const compositeCanvas = document.createElement('canvas');
-        compositeCanvas.width = 700;
-        compositeCanvas.height = 200;
+        compositeCanvas.width = 740;
+        compositeCanvas.height = 240;
         const compositeCtx = compositeCanvas.getContext('2d');
 
         const textScale = 2;
         const textCanvas = document.createElement('canvas');
-        textCanvas.width = 700*textScale;
-        textCanvas.height = 200*textScale;
+        textCanvas.width = 740*textScale;
+        textCanvas.height = 240*textScale;
         const textCtx = textCanvas.getContext('2d');
         textCtx.scale(textScale, textScale);
 
@@ -135,31 +135,31 @@ const load = () => {
         }
         
         const renderSplashtag = () => {
-            textCtx.clearRect(0, 0, 700, 200);
-            ctx.clearRect(0, 0, 700, 200);
+            textCtx.clearRect(0, 0, 740, 240);
+            ctx.clearRect(0, 0, 740, 240);
 
             if (!banners[tag.banner].layers) {
                 // If not one of the special "pick your own colour" banners, just draw it
-                ctx.drawImage(banners[tag.banner].image, 0, 0, 700, 200);
+                ctx.drawImage(banners[tag.banner].image, 0, 0, 740, 240);
             } else {
                 // Special custom colour banners draw each layer then are added
                 const imageLayers = banners[tag.banner].layerImages;
                 for (let i = 0; i < imageLayers.length; i++) {
-                    compositeCtx.clearRect(0, 0, 700, 200);
+                    compositeCtx.clearRect(0, 0, 740, 240);
                     compositeCtx.save();
                     compositeCtx.fillStyle = tag.bgColours[!i ? i : imageLayers.length - i];
-                    compositeCtx.drawImage(imageLayers[i], 0, 0, 700, 200);
+                    compositeCtx.drawImage(imageLayers[i], 0, 0, 740, 240);
                     compositeCtx.globalCompositeOperation = 'difference';
-                    compositeCtx.fillRect(0, 0, 700, 200);
+                    compositeCtx.fillRect(0, 0, 740, 240);
                     compositeCtx.restore();
 
                     layerCtx.save();
-                    layerCtx.drawImage(imageLayers[i], 0, 0, 700, 200);
+                    layerCtx.drawImage(imageLayers[i], 0, 0, 740, 240);
                     layerCtx.globalCompositeOperation = 'source-in';
-                    layerCtx.drawImage(compositeCanvas, 0, 0, 700, 200);
+                    layerCtx.drawImage(compositeCanvas, 0, 0, 740, 240);
                     layerCtx.restore();
                     ctx.drawImage(canvasLayer, 0, 0);
-                    layerCtx.clearRect(0, 0, 700, 200);
+                    layerCtx.clearRect(0, 0, 740, 240);
                 }
             }
 
@@ -173,10 +173,10 @@ const load = () => {
                 textCtx.font = `36px ${textFont}`;
                 textCtx.letterSpacing = "-0.3px";
                 const textWidth = textCtx.measureText(tag.title.toString()).width;
-                const xScale = getXScale(textWidth, 700-32);
+                const xScale = getXScale(textWidth, 740-32);
 
                 if (tag.isCustom) {
-                    clickRegions[0].style = `--x1: 15px; --y1: 5px; --x2: ${xScale < 1 ? 685 : Math.round(textWidth + 15)}px; --y2: 50px;`;
+                    clickRegions[0].style = `--x1: 15px; --y1: 5px; --x2: ${xScale < 1 ? 710 : Math.round(textWidth + 25)}px; --y2: 50px;`;
                     clickRegions[1].style = `display: none;`;
                 } else {
                     const firstTitle = lang[language].titles.first[tag.title.first];
@@ -196,7 +196,7 @@ const load = () => {
                 // in game italic value is 0.12
                 textCtx.transform(1, 0, -7.5/100, 1, 0, 0);
                 textCtx.scale(xScale, 1);
-                textCtx.fillText(tag.title.toString(), 18 / xScale, 42);
+                textCtx.fillText(tag.title.toString(), 24 / xScale, 48);
                 textCtx.restore();
                 textCtx.letterSpacing = "0px";
             } else {
@@ -218,7 +218,7 @@ const load = () => {
                 clickRegions[3].style = `--x1: 25px; --y1: 165px; --x2: ${(xScale < 1 ? maxX : Math.round(textWidth)) + 25}px; --y2: 185px;`;
 
                 textCtx.scale(xScale, 1);
-                textCtx.fillText('' + tag.id, 24 / xScale, 185);
+                textCtx.fillText('' + tag.id, 24 / xScale, 215);
                 textCtx.restore();
             } else {
                 clickRegions[3].style = 'display: none;';
@@ -230,22 +230,22 @@ const load = () => {
                 textCtx.font = `66px ${titleFont}`;
                 textCtx.letterSpacing = "-0.4px";
                 const textWidth = textCtx.measureText(tag.name).width;
-                const xScale = getXScale(textWidth, 700-32);
+                const xScale = getXScale(textWidth, 740-32);
 
-                const x1 = 700/2-1.5 - Math.round(textWidth / 2);
-                clickRegions[2].style = `--x1: ${xScale < 1 ? 15 : Math.round(700/2-1.5 - textWidth/2)}px; --y1: 70px; --x2: ${xScale < 1 ? 685 : Math.round(x1 + textWidth)}px; --y2: 120px;`;
+                const x1 = 740/2-1.5 - Math.round(textWidth / 2);
+                clickRegions[2].style = `--x1: ${xScale < 1 ? 15 : Math.round(740/2-1.5 - textWidth/2)}px; --y1: 70px; --x2: ${xScale < 1 ? 685 : Math.round(x1 + textWidth)}px; --y2: 120px;`;
                 
                 textCtx.textAlign = 'center';
                 textCtx.scale(xScale, 1);
-                textCtx.fillText(tag.name, (700/2-1.5) / xScale, 119);
+                textCtx.fillText(tag.name, (740/2-1.5) / xScale, 145);
 
                 textCtx.restore();
             } else {
                 clickRegions[2].style = 'display: none;';
             }
             
-            ctx.drawImage(textCanvas, 0, 0, 700, 200);
-            textCtx.clearRect(0, 0, 700, 200);
+            ctx.drawImage(textCanvas, 0, 0, 740, 240);
+            textCtx.clearRect(0, 0, 740, 240);
 
             // If the banner name or badge has either "custom" or "data" it is definitely a custom resource
             let customed = banners[tag.banner].custom || false;
@@ -253,7 +253,7 @@ const load = () => {
             // Draw each badge on the banner
             for (let i = 0; i < 3; i++) {
                 if (tag.badges[i] !== -1) {
-                    const x = 480 + 74*i;
+                    const x = 490 + 74*i;
 
                     clickRegions[4 + i].style = `--x1: ${x}px; --y1: 128px; --x2: ${x+70}px; --y2: ${128+70}px;`;
 
@@ -264,11 +264,11 @@ const load = () => {
                         const ch = badges[tag.badges[i]].image.naturalHeight;
                         const landscape = cw > ch;
                         const ratio = !landscape ? (cw / ch) : (ch / cw);
-                        const width = landscape ? 70 : 70*ratio;
-                        const height = !landscape ? 70 : 70*ratio;
-                        ctx.drawImage(badges[tag.badges[i]].image, x + (70 / 2 - width / 2), 128 + (70 / 2 - height / 2), width, height);
+                        const width = landscape ? 72 : 72*ratio;
+                        const height = !landscape ? 72 : 72*ratio;
+                        ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 162 + (80 / 2 - height / 2), width, height);
                     } else {
-                        ctx.drawImage(badges[tag.badges[i]].image, x, 128, 70, 70);
+                        ctx.drawImage(badges[tag.badges[i]].image, x, 162, 72, 72);
                     }
                 } else {
                     clickRegions[4 + i].style = `display: none;`;
@@ -350,25 +350,25 @@ const load = () => {
                 if (featured.length === 1) {
                     const a = artists[featured[0]];
                     textCtx.drawImage(watermarks[featured[0]+1], wmX - a.offset, wm.offset.y, wm.width, wm.height);
-                    textCtx.fillText(a.name, textPos.x - a.offset, textPos.y);
+                    textCtx.fillText(a.name, textPos.x - a.offset, textPos.y+15);
                 } else if (featured.length > 1) {
-                    textCtx.drawImage(watermarks[0], wmX, wm.offset.y, wm.width, wm.height);
+                    textCtx.drawImage(watermarks[0], wmX, wm.offset.y+15, wm.width, wm.height);
                     let i = 0;
                     featured.forEach(f => {
                         const a = artists[f];
-                        textCtx.fillText(a.name, textPos.x - a.offset, textPos.y + 14*(i++));
+                        textCtx.fillText(a.name, textPos.x - a.offset, textPos.y+ 15 + 14*(i++));
                     });
                 }
 
                 textCtx.fillStyle = tag.colour;
                 textCtx.globalCompositeOperation = 'source-in';
-                textCtx.fillRect(0, 0, 700, 200);
+                textCtx.fillRect(0, 0, 740, 240);
                 textCtx.globalCompositeOperation = 'source-over';
             }
 
             ctx.save();
             ctx.globalAlpha = 0.2;
-            ctx.drawImage(textCanvas, 0, 0, 700, 200);
+            ctx.drawImage(textCanvas, 0, 0, 740, 240);
             ctx.restore();
 
             // Disables download button if testing locally
