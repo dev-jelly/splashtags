@@ -196,7 +196,7 @@ const load = () => {
                 // in game italic value is 0.12
                 textCtx.transform(1, 0, -7.5/100, 1, 0, 0);
                 textCtx.scale(xScale, 1);
-                textCtx.fillText(tag.title.toString(), 24 / xScale, 48);
+                textCtx.fillText(tag.title.toString(), 28 / xScale, 48);
                 textCtx.restore();
                 textCtx.letterSpacing = "0px";
             } else {
@@ -218,7 +218,7 @@ const load = () => {
                 clickRegions[3].style = `--x1: 25px; --y1: 165px; --x2: ${(xScale < 1 ? maxX : Math.round(textWidth)) + 25}px; --y2: 185px;`;
 
                 textCtx.scale(xScale, 1);
-                textCtx.fillText('' + tag.id, 24 / xScale, 215);
+                textCtx.fillText('' + tag.id, 28 / xScale, 215);
                 textCtx.restore();
             } else {
                 clickRegions[3].style = 'display: none;';
