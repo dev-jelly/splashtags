@@ -1,246 +1,296 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Splashtag Creator</title>
-        <meta name="theme-color" content="#ffff00">
-        <meta property="og:title" content="Splashtag Creator">
-        <meta name="og:type" content="website">
-        <meta name="description" content="Custom Splatoon 3 splashtag creator.">
-        <meta name="og:description" content="Custom Splatoon 3 splashtag creator.">
-        <meta property="og:image" content="https://file.garden/W1K6HZQ1fV1iP3Sq/splashtag/ico.png">
-        <link rel="icon" href="assets/images/ico.png">
-        <script type="text/javascript" src="main.js"></script>
-        <link rel="stylesheet" href="style.css">
-        <script>
-            function selectTab (i) {
-                document.querySelectorAll('.tab')[i].click();
-            }
-            function selectTitle (index) {
-                selectTab(0);
-                const isCustom = !!document.querySelector('.showcustom');
-                const titleDropdown = document.querySelector(`#titleinput${index+1}`);
-                const titleInput = document.querySelector('#customtitle');
-                (isCustom ? titleInput : titleDropdown).focus();
-                if (isCustom) titleInput.select();
-            }
-            function selectName () {
-                selectTab(0);
-                const nameInput = document.querySelector('#nameinput');
-                nameInput.focus();
-                nameInput.select();
-            }
-            function selectTag () {
-                selectTab(0);
-                const tagInput = document.querySelector('#taginput');
-                tagInput.focus();
-                tagInput.select();
-                ['#', 'Nr. ', 'Nº ', 'n.º '].forEach(t => {
-                    if (tagInput.value.startsWith(t)) {
-                        tagInput.selectionStart = t.length;
-                    }
-                })
-            }
-            function selectBadge (index) {
-                selectTab(2);
-                document.querySelectorAll('input[name="badgenum"]')[index].click();
-                document.querySelector('#badgecontainer .selected').parentElement.previousElementSibling.classList.remove('collapsed');
-                document.querySelector('#badgecontainer .selected').scrollIntoView();
-            }
-        </script>
-    </head>
-    <body onload="load();">
-        <div class="sitecontent">
+<head>
+    <meta charset="utf-8">
+    <title>Splashtag Creator</title>
+    <meta name="theme-color" content="#ffff00">
+    <meta property="og:title" content="Splashtag Creator">
+    <meta name="og:type" content="website">
+    <meta name="description" content="Custom Splatoon 3 splashtag creator.">
+    <meta name="og:description" content="Custom Splatoon 3 splashtag creator.">
+    <meta property="og:image" content="https://file.garden/W1K6HZQ1fV1iP3Sq/splashtag/ico.png">
+    <link rel="icon" href="assets/images/ico.png">
+    <script type="text/javascript" src="main.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script>
+        function selectTab(i) {
+            document.querySelectorAll('.tab')[i].click();
+        }
+
+        function selectTitle(index) {
+            selectTab(0);
+            const isCustom = !!document.querySelector('.showcustom');
+            const titleDropdown = document.querySelector(`#titleinput${index + 1}`);
+            const titleInput = document.querySelector('#customtitle');
+            (isCustom ? titleInput : titleDropdown).focus();
+            if (isCustom) titleInput.select();
+        }
+
+        function selectName() {
+            selectTab(0);
+            const nameInput = document.querySelector('#nameinput');
+            nameInput.focus();
+            nameInput.select();
+        }
+
+        function selectTag() {
+            selectTab(0);
+            const tagInput = document.querySelector('#taginput');
+            tagInput.focus();
+            tagInput.select();
+            ['#', 'Nr. ', 'Nº ', 'n.º '].forEach(t => {
+                if (tagInput.value.startsWith(t)) {
+                    tagInput.selectionStart = t.length;
+                }
+            })
+        }
+
+        function selectBadge(index) {
+            selectTab(2);
+            document.querySelectorAll('input[name="badgenum"]')[index].click();
+            document.querySelector('#badgecontainer .selected').parentElement.previousElementSibling.classList.remove('collapsed');
+            document.querySelector('#badgecontainer .selected').scrollIntoView();
+        }
+    </script>
+</head>
+<body onload="load();">
+<div class="sitecontent">
+    <br>
+    <div id="container">
+        <div id="main" class="">
+            <div id="clickRegions">
+                <div onclick="selectTitle(0)"></div>
+                <div onclick="selectTitle(1)"></div>
+                <div onclick="selectName()"></div>
+                <div onclick="selectTag()"></div>
+                <div onclick="selectBadge(0)"></div>
+                <div onclick="selectBadge(1)"></div>
+                <div onclick="selectBadge(2)"></div>
+            </div>
+            <canvas id="splashtag" width="740" height="240"></canvas>
+            <img src="./assets/banners/Npl_Tutorial00.png" style="display: none;">
             <br>
-            <div id="container">
-                <div id="main" class="">
-                    <div id="clickRegions">
-                        <div onclick="selectTitle(0)"></div>
-                        <div onclick="selectTitle(1)"></div>
-                        <div onclick="selectName()"></div>
-                        <div onclick="selectTag()"></div>
-                        <div onclick="selectBadge(0)"></div>
-                        <div onclick="selectBadge(1)"></div>
-                        <div onclick="selectBadge(2)"></div>
-                    </div>
-                    <canvas id="splashtag" width="740" height="240"></canvas><img src="./assets/banners/Npl_Tutorial00.png" style="display: none;">
-                    <br>
-                    <div id="tab-buttons">
-                        <input class="tab selected" type="button" value="Text" name="tabText">
-                        <input class="tab" type="button" value="Banners" name="tabBanners">
-                        <input class="tab" type="button" value="Badges" name="tabBadges">
-                    </div>
-                    <div class="tabcontainer hidecustom">
+            <div id="tab-buttons">
+                <input class="tab selected" type="button" value="Text" name="tabText">
+                <input class="tab" type="button" value="Banners" name="tabBanners">
+                <input class="tab" type="button" value="Badges" name="tabBadges">
+            </div>
+            <div class="tabcontainer hidecustom">
 
-                        <!-- Text --- Name, Tag, Titles -->
-                        <div class="tabcontent" data-name="text">
-                            <div class="midsection">
-                                <div>
-                                    <div class="sectiontitle">
-                                        <span name="textName">Name</span>:
-                                    </div>
-                                    <div class="inputcomponents">
-                                        <input id="nameinput" type="text" maxlength="10000" value="Player" placeholder="Player" style="width: 10em;">
-                                        <input id="taginput" type="text" value="#0001" placeholder="#0001" maxlength="10000" style="width: 5em;">
-                                        <input id="customcolour" type="color" value="#ffffff">
-                                        <label><span> </span> <input onclick="toggleWatermark(this);" type="checkbox" style="visibility: hidden;" checked> </label>
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sectiontitle">
-                                        <span name="textTitles">Title</span>: 
-                                        <label>
-                                            <small>
-                                                (<span name="textCustom">Custom</span> <input id="customcheck" type="checkbox" name="customcheck" style="vertical-align: text-bottom;">)
-                                            </small>
-                                        </label>
-                                    </div>
-                                    <div class="inputcomponents" style="position:relative;">
-                                        <select id="titleinput1" class="notcustom"></select>
-                                        <select id="titleinput2" class="notcustom"></select> 
-                                        <input id="customtitle" placeholder="Splatlandian Youth" value="Splatlandian Youth" maxlength="10000" class="custom" style="width: 20em;">
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="sectiontitle">
-                                        <span name="textRandomize">Randomize</span>:
-                                    </div>
-                                    <div class="inputcomponents">
-                                        <input id="randomtitle" value="Both Titles" type="button" name="buttonBoth">
-                                        <input id="randomtitle1" value="First" type="button" name="buttonFirst">
-                                        <input id="randomtitle2" value="Last" type="button" name="buttonLast">
-                                        <input id="randombanner" value="Banner" type="button" name="buttonBanner">
-                                        <input id="randombadge" value="Badges" type="button" name="buttonBadges">
-                                        <input id="randomall" value="All!" type="button" name="buttonAll">
-                                    </div>
-                                </div>
+                <!-- Text --- Name, Tag, Titles -->
+                <div class="tabcontent" data-name="text">
+                    <div class="midsection">
+                        <div>
+                            <div class="sectiontitle">
+                                <span name="textName">Name</span>:
                             </div>
-                            
-                            <a id="downloadlink" download="splashtag.png"><input id="downloadbutton" type="button" value="Download!" disabled></a>
-                        </div>
-
-                        <!-- Banners -->
-                        <div class="tabcontent hidden" data-name="banners" data-min="2" data-max="8" data-scale="4" style="--items: 4;">
-                            <label class="file">(<span name="textUpload">Upload</span>)<input type="file" id="custombanner" style="display: none;" multiple accept="image/*"></label><div class="spacer"></div><select id="bannersection"></select>
-                            <div class="imglistcontainer"><div id="bannercontainer"></div></div>
-                            <div class="bottomcontainer">
-                                <div id="bannercolours" style="display: inline;"><span name="textColour">Colour</span> <input type="color" value="#ffffff"> <input type="color" value="#ff0000"> <input type="color" value="#00ff00"> <input type="color" value="#0000ff"></div>
-                                <button class="scale down" data-do="1"></button><button class="scale up" data-do="-1"></button>
+                            <div class="inputcomponents">
+                                <input id="nameinput" type="text" maxlength="10000" value="Player" placeholder="Player"
+                                       style="width: 10em;">
+                                <input id="taginput" type="text" value="#0001" placeholder="#0001" maxlength="10000"
+                                       style="width: 5em;">
+                                <input id="customcolour" type="color" value="#ffffff">
+                                <label><span> </span> <input onclick="toggleWatermark(this);" type="checkbox"
+                                                             style="visibility: hidden;" checked> </label>
                             </div>
                         </div>
-
-                        <!-- Badges -->
-                        <div class="tabcontent hidden" data-name="badges" data-min="4" data-max="20" data-scale="12" style="--items: 12;">
-                            <label><input type="radio" name="badgenum" value="1" checked><span name="textSlot1">Slot 1</span></label> - <label><input type="radio" name="badgenum" value="2"><span name="textSlot2">Slot 2</span></label> - <label><input type="radio" name="badgenum" value="3"><span name="textSlot3">Slot 3</span></label><div class="spacer"></div><label class=>(<span name="textUpload">Upload</span>)<div class="spacer"></div><input type="file" id="custombadge" style="display: none;" multiple accept="image/*"></label> <select id="badgesection"></select>
-                            <div class="imglistcontainer"><div id="badgecontainer"></div></div>
-                            <div class="bottomcontainer">
-                                <button class="scale down" data-do="1"></button><button class="scale up" data-do="-1"></button>
+                        <div>
+                            <div class="sectiontitle">
+                                <span name="textTitles">Title</span>:
+                                <label>
+                                    <small>
+                                        (<span name="textCustom">Custom</span> <input id="customcheck" type="checkbox"
+                                                                                      name="customcheck"
+                                                                                      style="vertical-align: text-bottom;">)
+                                    </small>
+                                </label>
+                            </div>
+                            <div class="inputcomponents" style="position:relative;">
+                                <select id="titleinput1" class="notcustom"></select>
+                                <select id="titleinput2" class="notcustom"></select>
+                                <input id="customtitle" placeholder="Splatlandian Youth" value="Splatlandian Youth"
+                                       maxlength="10000" class="custom" style="width: 20em;">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="sectiontitle">
+                                <span name="textRandomize">Randomize</span>:
+                            </div>
+                            <div class="inputcomponents">
+                                <input id="randomtitle" value="Both Titles" type="button" name="buttonBoth">
+                                <input id="randomtitle1" value="First" type="button" name="buttonFirst">
+                                <input id="randomtitle2" value="Last" type="button" name="buttonLast">
+                                <input id="randombanner" value="Banner" type="button" name="buttonBanner">
+                                <input id="randombadge" value="Badges" type="button" name="buttonBadges">
+                                <input id="randomall" value="All!" type="button" name="buttonAll">
                             </div>
                         </div>
                     </div>
+
+                    <a id="downloadlink" download="splashtag.png"><input id="downloadbutton" type="button"
+                                                                         value="Download!" disabled></a>
                 </div>
-                <div id="main2" class="flipped">
-                    <div class="credits">
-                        <div class="title-font" style="font-size: 34px; width: 100%;">Credits</div>
-                        <div class="credit">
-                            <span>Website creator</span>
-                            <a href="https://twitter.com/spaghettitron/">
-                                <img src="./assets/images/credits/spaghettitron.png" class="twticon">
-                                @spaghettitron
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Translation help</span>
-                            <a href="https://twitter.com/Raven_The_Cute/">
-                                <img src="./assets/images/credits/raven_the_cute.jpg" class="twticon">
-                                @Raven_The_Cute
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Splatoon database</span>
-                            <a href="https://twitter.com/LeanYoshi/">
-                                <img src="./assets/images/credits/leanyoshi.jpg" class="twticon">
-                                @LeanYoshi
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Splatband banners</span>
-                            <a href="https://twitter.com/DeadLineSMB_Art/">
-                                <img src="./assets/images/credits/deadlinesmb.jpg" class="twticon">
-                                @DeadLineSMB_Art
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Special Weapon banners</span>
-                            <a href="https://twitter.com/EIectroDev/">
-                                <img src="./assets/images/credits/electrodev.jpg" class="twticon">
-                                @EIectroDev
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Splatband badges</span>
-                            <a href="https://twitter.com/_zeeto_/">
-                                <img src="./assets/images/credits/zeeto.jpg" class="twticon">
-                                @_zeeto_
-                            </a>
-                        </div>
-                        <div class="credit">
-                            <span>Salmon Run egg badges</span>
-                            <a href="https://twitter.com/sharkinodraws/">
-                                <img src="./assets/images/credits/sharkinodraws.jpg" class="twticon">
-                                @sharkinodraws
-                            </a>
-                        </div>
-                        <span>Any sections labeled with * are fan-made, and were made by the awesome people above!</span>
-                        <span>Splatoon and all related fonts and images used are property of Nintendo</span>
-                        <a href="https://github.com/SeymourSchlong/splashtags" target="_blank">View source on GitHub</a>
-                        <a href="https://ko-fi.com/ironbean" target="_blank"><img src="./assets/images/kofi.png"></a>
-                        <a id="creditsX" href="javascript://">Back to Creator</a>
+
+                <!-- Banners -->
+                <div class="tabcontent hidden" data-name="banners" data-min="2" data-max="8" data-scale="4"
+                     style="--items: 4;">
+                    <label class="file">(<span name="textUpload">Upload</span>)<input type="file" id="custombanner"
+                                                                                      style="display: none;" multiple
+                                                                                      accept="image/*"></label>
+                    <div class="spacer"></div>
+                    <select id="bannersection"></select>
+                    <div class="imglistcontainer">
+                        <div id="bannercontainer"></div>
+                    </div>
+                    <div class="bottomcontainer">
+                        <div id="bannercolours" style="display: inline;"><span name="textColour">Colour</span> <input
+                                type="color" value="#ffffff"> <input type="color" value="#ff0000"> <input type="color"
+                                                                                                          value="#00ff00">
+                            <input type="color" value="#0000ff"></div>
+                        <button class="scale down" data-do="1"></button>
+                        <button class="scale up" data-do="-1"></button>
                     </div>
                 </div>
-            </div>
-            <div style="margin-top: 8rem">
-                <!-- 한국어 버전 문구 -->
-                <div>
-                    <p style="color: red;">
-                        본 사이트는 아크릴 명찰 제작 편의를 위해 임시로 편집한 사이트 입니다.<br>
-                        원본 사이트는 아래 링크를 참고해 주세요.<br>
-                        사이즈 변경을 원하시는 게 아니라면 아래 링크를 참고해 주세요.<br>
-                        <a href="https://seymourschlong.github.io/splashtags/">원본 사이트</a>
-                    </p>
-                    <p>
-                        원본 사이트는 700px * 200px 사이즈로 제작되었으나, <br>
-                        아크릴 명찰 제작을 위해 배경이 740px * 240px 사이즈로 수정되었습니다.<br>
-                        본 사이트는 원본 사이트의 코드를 수정하여 제작고, 원본 사이트의 라이센스가 GPL로 구성되었기 때문에 본 사이트도 GPL로 구성되었으며.<br>
-                        수정된 소스코드는 <a href="https://github.com/dev-jelly/splashtags">여기</a>에서 확인하실 수 있습니다.
-                        아래 크레딧은 원본 사이트의 크레딧 입니다.
-                        도네이션 링크 등등도 모두 원본 사이트를 위한 것입니다.
-                    </p>
+
+                <!-- Badges -->
+                <div class="tabcontent hidden" data-name="badges" data-min="4" data-max="20" data-scale="12"
+                     style="--items: 12;">
+                    <label><input type="radio" name="badgenum" value="1" checked><span
+                            name="textSlot1">Slot 1</span></label> - <label><input type="radio" name="badgenum"
+                                                                                   value="2"><span name="textSlot2">Slot 2</span></label>
+                    - <label><input type="radio" name="badgenum" value="3"><span name="textSlot3">Slot 3</span></label>
+                    <div class="spacer"></div>
+                    <label class=>(<span name="textUpload">Upload</span>)
+                        <div class="spacer"></div>
+                        <input type="file" id="custombadge" style="display: none;" multiple accept="image/*"></label>
+                    <select id="badgesection"></select>
+                    <div class="imglistcontainer">
+                        <div id="badgecontainer"></div>
+                    </div>
+                    <div class="bottomcontainer">
+                        <button class="scale down" data-do="1"></button>
+                        <button class="scale up" data-do="-1"></button>
+                    </div>
                 </div>
-<!--                English  -->
-<div>
-                    <p style="color: red;">
-                        This site is a temporary edit for the convenience of making acrylic name tags.<br>
-                        Please refer to the link below for the original site.<br>
-                        <a href="https://seymourschlong.github.io/splashtags/">Original site</a>
-                        If you don't want to change the size, please refer to the link below.
-                    </p>
-                    <p>
-                        The original site was created in 700px * 200px size, but <br>
-                        The background has been modified to 740px * 240px size for making acrylic name tags.<br>
-                        This site was created by modifying the source code of the original site, and the license of the original site is GPL, so this site is also GPL.<br>
-                        You can check the modified source code on <a href="https://github.com/dev-jelly/splashtags">here</a>
-                        The credits below are the credits of the original site.
-                        Donation links, etc. are also for the original site.
-                    </p>
-            </div>
-            <div id="showcredits">
-                <a data-alt="Hide credits" href="javascript://">Show credits</a>
-            </div>
-            <div id="languageSelector">
-                <span name="textLanguage">Language</span>: <select id="lang"></select>
             </div>
         </div>
+        <div id="main2" class="flipped">
+            <div class="credits">
+                <div class="title-font" style="font-size: 34px; width: 100%;">Credits</div>
+                <div class="credit">
+                    <span>Website creator</span>
+                    <a href="https://twitter.com/spaghettitron/">
+                        <img src="./assets/images/credits/spaghettitron.png" class="twticon">
+                        @spaghettitron
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Translation help</span>
+                    <a href="https://twitter.com/Raven_The_Cute/">
+                        <img src="./assets/images/credits/raven_the_cute.jpg" class="twticon">
+                        @Raven_The_Cute
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Splatoon database</span>
+                    <a href="https://twitter.com/LeanYoshi/">
+                        <img src="./assets/images/credits/leanyoshi.jpg" class="twticon">
+                        @LeanYoshi
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Splatband banners</span>
+                    <a href="https://twitter.com/DeadLineSMB_Art/">
+                        <img src="./assets/images/credits/deadlinesmb.jpg" class="twticon">
+                        @DeadLineSMB_Art
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Special Weapon banners</span>
+                    <a href="https://twitter.com/EIectroDev/">
+                        <img src="./assets/images/credits/electrodev.jpg" class="twticon">
+                        @EIectroDev
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Splatband badges</span>
+                    <a href="https://twitter.com/_zeeto_/">
+                        <img src="./assets/images/credits/zeeto.jpg" class="twticon">
+                        @_zeeto_
+                    </a>
+                </div>
+                <div class="credit">
+                    <span>Salmon Run egg badges</span>
+                    <a href="https://twitter.com/sharkinodraws/">
+                        <img src="./assets/images/credits/sharkinodraws.jpg" class="twticon">
+                        @sharkinodraws
+                    </a>
+                </div>
+                <span>Any sections labeled with * are fan-made, and were made by the awesome people above!</span>
+                <span>Splatoon and all related fonts and images used are property of Nintendo</span>
+                <a href="https://github.com/SeymourSchlong/splashtags" target="_blank">View source on GitHub</a>
+                <a href="https://ko-fi.com/ironbean" target="_blank"><img src="./assets/images/kofi.png"></a>
+                <a id="creditsX" href="javascript://">Back to Creator</a>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 8rem">
+        <!-- 한국어 버전 문구 -->
+        <div>
+            <p style="color: red;">
+                본 사이트는 아크릴 명찰 제작 편의를 위해 임시로 편집한 사이트 입니다.<br>
+                원본 사이트는 아래 링크를 참고해 주세요.<br>
+                사이즈 변경을 원하시는 게 아니라면 아래 링크를 참고해 주세요.<br>
+                <a href="https://seymourschlong.github.io/splashtags/">원본 사이트</a>
+            </p>
+            <p>
+                원본 사이트는 700px * 200px 사이즈로 제작되었으나, <br>
+                아크릴 명찰 제작을 위해 배경이 740px * 240px 사이즈로 수정되었습니다.<br>
+                본 사이트는 원본 사이트의 코드를 수정하여 제작고, 원본 사이트의 라이센스가 GPL로 구성되었기 때문에 본 사이트도 GPL로 구성되었으며.<br>
+                수정된 소스코드는 <a href="https://github.com/dev-jelly/splashtags">여기</a>에서 확인하실 수 있습니다.
+                아래 크레딧은 원본 사이트의 크레딧 입니다.
+                도네이션 링크 등등도 모두 원본 사이트를 위한 것입니다.
+            </p>
+        </div>
+        <!--                English  -->
+        <div>
+            <p style="color: red;">
+                This site is a temporary edit for the convenience of making acrylic name tags.<br>
+                Please refer to the link below for the original site.<br>
+                <a href="https://seymourschlong.github.io/splashtags/">Original site</a>
+                If you don't want to change the size, please refer to the link below.
+            </p>
+            <p>
+                The original site was created in 700px * 200px size, but <br>
+                The background has been modified to 740px * 240px size for making acrylic name tags.<br>
+                This site was created by modifying the source code of the original site, and the license of the original
+                site is GPL, so this site is also GPL.<br>
+                You can check the modified source code on <a href="https://github.com/dev-jelly/splashtags">here</a>
+                The credits below are the credits of the original site.
+                Donation links, etc. are also for the original site.
+            </p>
+        </div>
+    </div>
+    <div id="showcredits">
+        <a data-alt="Hide credits" href="javascript://">Show credits</a>
+    </div>
+    <div id="languageSelector">
+        <span name="textLanguage">Language</span>: <select id="lang"></select>
+    </div>
+</div>
 
-    </body>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6VQSDDLFE8"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-6VQSDDLFE8');
+</script>
+</body>
 </html>
