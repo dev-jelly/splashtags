@@ -264,11 +264,11 @@ const load = () => {
                         const ch = badges[tag.badges[i]].image.naturalHeight;
                         const landscape = cw > ch;
                         const ratio = !landscape ? (cw / ch) : (ch / cw);
-                        const width = landscape ? 72 : 72*ratio;
-                        const height = !landscape ? 72 : 72*ratio;
-                        ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 162 + (80 / 2 - height / 2), width, height);
+                        const width = landscape ? 70 : 70*ratio;
+                        const height = !landscape ? 70 : 70*ratio;
+                        ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 157 + (80 / 2 - height / 2), width, height);
                     } else {
-                        ctx.drawImage(badges[tag.badges[i]].image, x, 162, 72, 72);
+                        ctx.drawImage(badges[tag.badges[i]].image, x, 157, 72, 72);
                     }
                 } else {
                     clickRegions[4 + i].style = `display: none;`;
