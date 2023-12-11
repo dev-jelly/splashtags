@@ -253,10 +253,10 @@ const load = () => {
             // Draw each badge on the banner
             for (let i = 0; i < 3; i++) {
                 if (tag.badges[i] !== -1) {
-                    const x = 490 + 74*i;
+                    const x = 493 + 74*i;
 
                     clickRegions[4 + i].style = `--x1: ${x}px; --y1: 128px; --x2: ${x+70}px; --y2: ${128+70}px;`;
-                    const badgeSize = 68;
+                    const badgeSize = 62;
                     // Below used to resize custom badges to retain their scale.
                     if (badges[tag.badges[i]].custom) {
                         customed = true;
@@ -266,9 +266,9 @@ const load = () => {
                         const ratio = !landscape ? (cw / ch) : (ch / cw);
                         const width = landscape ? badgeSize : badgeSize*ratio;
                         const height = !landscape ? badgeSize : badgeSize*ratio;
-                        ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 157 + (80 / 2 - height / 2), width, height);
+                        ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 159 + (80 / 2 - height / 2), width, height);
                     } else {
-                        ctx.drawImage(badges[tag.badges[i]].image, x, 157, badgeSize, badgeSize);
+                        ctx.drawImage(badges[tag.badges[i]].image, x,  159, badgeSize, badgeSize);
                     }
                 } else {
                     clickRegions[4 + i].style = `display: none;`;
