@@ -237,7 +237,7 @@ const load = () => {
                 
                 textCtx.textAlign = 'center';
                 textCtx.scale(xScale, 1);
-                textCtx.fillText(tag.name, (740/2-1.5) / xScale, 145);
+                textCtx.fillText(tag.name, (740/2-1.5) / xScale, 139);
 
                 textCtx.restore();
             } else {
