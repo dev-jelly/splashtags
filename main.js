@@ -18,7 +18,7 @@ const load = () => {
         }
 
         const langRegex = /\?lang=(\w{4})/;
-        const language = location.search && langRegex.test(location.search) ? langRegex.exec(location.search)[1] : 'KRko';
+        let language = location.search && langRegex.test(location.search) ? langRegex.exec(location.search)[1] : 'KRko';
         if (Object.keys(lang).indexOf(language) === -1) {
             language = 'KRko';
         }
@@ -256,7 +256,7 @@ const load = () => {
                     const x = 490 + 74*i;
 
                     clickRegions[4 + i].style = `--x1: ${x}px; --y1: 128px; --x2: ${x+70}px; --y2: ${128+70}px;`;
-
+                    const badgeSize = 68;
                     // Below used to resize custom badges to retain their scale.
                     if (badges[tag.badges[i]].custom) {
                         customed = true;
@@ -264,11 +264,11 @@ const load = () => {
                         const ch = badges[tag.badges[i]].image.naturalHeight;
                         const landscape = cw > ch;
                         const ratio = !landscape ? (cw / ch) : (ch / cw);
-                        const width = landscape ? 70 : 70*ratio;
-                        const height = !landscape ? 70 : 70*ratio;
+                        const width = landscape ? badgeSize : badgeSize*ratio;
+                        const height = !landscape ? badgeSize : badgeSize*ratio;
                         ctx.drawImage(badges[tag.badges[i]].image, x + (80 / 2 - width / 2), 157 + (80 / 2 - height / 2), width, height);
                     } else {
-                        ctx.drawImage(badges[tag.badges[i]].image, x, 157, 72, 72);
+                        ctx.drawImage(badges[tag.badges[i]].image, x, 157, badgeSize, badgeSize);
                     }
                 } else {
                     clickRegions[4 + i].style = `display: none;`;
